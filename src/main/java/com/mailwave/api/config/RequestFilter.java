@@ -1,6 +1,6 @@
 package com.mailwave.api.config;
 
-public class TokenService {
+public class RequestFilter{
 
     //TO DO: Implements
 
