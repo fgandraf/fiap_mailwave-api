@@ -1,0 +1,27 @@
+package com.mailwave.api.modules.sent.models;
+
+public class SentMessage {
+
+    //TO DO: Implements
+
+}
+
+/*
+--Referência para criação do modelo
+CREATE SEQUENCE SEQ_SENT_MESSAGES
+    START WITH 1
+    INCREMENT BY 1
+    NOCACHE
+    NOCYCLE;
+
+CREATE TABLE TBL_SENT_MESSAGES (
+    MESSAGE_ID NUMBER PRIMARY KEY,
+    ACCOUNT_ID NUMBER NOT NULL,
+    SUBJECT VARCHAR2(255),
+    BODY CLOB,
+    SENT_AT TIMESTAMP,
+    FOLDER_ID NUMBER,
+    FOREIGN KEY (ACCOUNT_ID) REFERENCES TBL_ACCOUNTS(ACCOUNT_ID),
+    FOREIGN KEY (FOLDER_ID) REFERENCES TBL_FOLDERS(FOLDER_ID)
+);
+ */

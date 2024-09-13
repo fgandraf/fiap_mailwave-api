@@ -1,0 +1,24 @@
+package com.mailwave.api.modules.tags.models;
+
+public class Tag {
+
+    // TO DO: Implements
+
+}
+
+/*
+--Referência para criação do modelo
+CREATE SEQUENCE SEQ_TAGS
+    START WITH 1
+    INCREMENT BY 1
+    NOCACHE
+    NOCYCLE;
+
+CREATE TABLE TBL_TAGS (
+    TAG_ID NUMBER PRIMARY KEY,
+    ACCOUNT_ID NUMBER NOT NULL,
+    TAG_NAME VARCHAR2(100) NOT NULL,
+    CREATED_AT TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (ACCOUNT_ID) REFERENCES TBL_ACCOUNTS(ACCOUNT_ID)
+);
+ */

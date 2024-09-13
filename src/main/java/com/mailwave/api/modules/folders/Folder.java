@@ -1,0 +1,24 @@
+package com.mailwave.api.modules.folders;
+
+public class Folder {
+
+    // TO DO: Implements
+
+}
+
+/*
+--Referência para criação do modelo
+CREATE SEQUENCE SEQ_FOLDERS
+    START WITH 1
+    INCREMENT BY 1
+    NOCACHE
+    NOCYCLE;
+
+CREATE TABLE TBL_FOLDERS (
+    FOLDER_ID NUMBER PRIMARY KEY,
+    ACCOUNT_ID NUMBER NOT NULL,
+    FOLDER_NAME VARCHAR2(100) NOT NULL,
+    CREATED_AT TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (ACCOUNT_ID) REFERENCES TBL_ACCOUNTS(ACCOUNT_ID)
+);
+ */
