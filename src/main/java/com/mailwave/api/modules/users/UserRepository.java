@@ -1,8 +1,9 @@
-package com.mailwave.api.modules.accounts;
+package com.mailwave.api.modules.users;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface AccountRepository extends JpaRepository<Account, Long> {
+public interface UserRepository extends JpaRepository<User, Long> {
 }
+

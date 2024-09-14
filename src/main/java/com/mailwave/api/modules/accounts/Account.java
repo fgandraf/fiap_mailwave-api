@@ -61,4 +61,7 @@ public class Account {
     @ManyToOne
     @JoinColumn(name = "USER_ID", nullable = false)
     private User user;
+
+    public Account() {
+    }
 }
