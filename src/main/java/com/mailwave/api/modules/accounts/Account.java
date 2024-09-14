@@ -57,11 +57,26 @@ public class Account {
     private LocalDateTime updatedAt;
 
 
-
     @ManyToOne
     @JoinColumn(name = "USER_ID", nullable = false)
     private User user;
 
-    public Account() {
+    public Account(Long id, String emailAddress, String provider, String passwordHash, String incomingServer, Integer incomingPort, String incomingProtocol, String outgoingServer, Integer outgoingPort, Boolean useSsl, Boolean useTls, LocalDateTime createdAt, LocalDateTime updatedAt, User user) {
+        this.id = id;
+        this.emailAddress = emailAddress;
+        this.provider = provider;
+        this.passwordHash = passwordHash;
+        this.incomingServer = incomingServer;
+        this.incomingPort = incomingPort;
+        this.incomingProtocol = incomingProtocol;
+        this.outgoingServer = outgoingServer;
+        this.outgoingPort = outgoingPort;
+        this.useSsl = useSsl;
+        this.useTls = useTls;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.user = user;
     }
+
+    public Account() {}
 }

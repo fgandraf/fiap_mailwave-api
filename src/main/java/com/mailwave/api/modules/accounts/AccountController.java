@@ -1,58 +1,81 @@
 package com.mailwave.api.modules.accounts;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.mailwave.api.modules.accounts.dtos.AccountResponse;
+import com.mailwave.api.modules.accounts.dtos.AccountCreateRequest;
+import com.mailwave.api.modules.accounts.dtos.AccountUpdateRequest;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/accounts")
 public class AccountController {
 
-    @Autowired
-    private AccountService accountService;
+
+    //-----Serviços que serão usados por esta controladora
+    private final AccountService accountService;
+
+
+
+
+    //-----Construtor padrão injeta as dependências
+    //-----Evitar a anotação @Autowired
+    public AccountController(AccountService accountService) {
+        this.accountService = accountService;
+    }
+
+
+
 
     // Criar uma nova conta
     @PostMapping
-    public ResponseEntity<Account> createAccount(@RequestBody Account account) {
-        Account createdAccount = accountService.createAccount(account);
+    public ResponseEntity<AccountResponse> createAccount(@Valid @RequestBody AccountCreateRequest request) {
+        var createdAccount = accountService.createAccount(request);
         return new ResponseEntity<>(createdAccount, HttpStatus.CREATED);
     }
 
+
+
+
     // Buscar todas as contas
     @GetMapping
-    public ResponseEntity<List<Account>> getAllAccounts() {
-        List<Account> accounts = accountService.getAllAccounts();
+    public ResponseEntity<List<AccountResponse>> getAllAccounts() {
+        var accounts = accountService.getAllAccounts();
         return new ResponseEntity<>(accounts, HttpStatus.OK);
     }
 
+
+
+
     // Buscar uma conta pelo ID
     @GetMapping("/{id}")
-    public ResponseEntity<Account> getAccountById(@PathVariable Long id) {
-        Optional<Account> account = accountService.getAccountById(id);
-        return account.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    public ResponseEntity<AccountResponse> getAccountById(@PathVariable Long id) {
+        var account = accountService.getAccountById(id);
+        return new ResponseEntity<>(account, HttpStatus.OK);
     }
 
+
+
+
     // Atualizar uma conta existente
-    @PutMapping("/{id}")
-    public ResponseEntity<Account> updateAccount(@PathVariable Long id, @RequestBody Account accountDetails) {
-        Optional<Account> updatedAccount = accountService.updateAccount(id, accountDetails);
-        return updatedAccount.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    @PutMapping
+    public ResponseEntity<AccountResponse> updateAccount(@Valid @RequestBody AccountUpdateRequest request) {
+        var updatedAccount = accountService.updateAccount(request);
+        return new ResponseEntity<>(updatedAccount, HttpStatus.OK);
     }
+
+
+
 
     // Deletar uma conta
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteAccount(@PathVariable Long id) {
-        boolean isDeleted = accountService.deleteAccount(id);
-        if (isDeleted) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        accountService.deleteAccount(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+
 }
+
