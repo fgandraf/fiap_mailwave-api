@@ -1,26 +1,36 @@
 package com.mailwave.api.modules.users;
 
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.EqualsAndHashCode;
+import java.time.LocalDateTime;
+
+@Getter
+@Setter
+@EqualsAndHashCode
+@Entity
+@Table(name = "TBL_USERS")
 public class User {
 
-    // TO DO: Implements
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_USERS")
+    @SequenceGenerator(name = "SEQ_USERS", sequenceName = "SEQ_USERS", allocationSize = 1)
+    @Column(name = "USER_ID")
+    private Long id;
 
+    @Column(name = "USERNAME")
+    private String username;
+
+    @Column(name = "EMAIL")
+    private String email;
+
+    @Column(name = "PASSWORD_HASH")
+    private String passwordHash;
+
+    @Column(name = "CREATED_AT")
+    private LocalDateTime createdAt;
+
+    @Column(name = "UPDATED_AT")
+    private LocalDateTime updatedAt;
 }
-
-/*
---Referência para criação do modelo
-
-CREATE SEQUENCE SEQ_USERS
-    START WITH 1
-    INCREMENT BY 1
-    NOCACHE
-    NOCYCLE;
-
-CREATE TABLE TBL_USERS (
-    USER_ID NUMBER PRIMARY KEY,
-    USERNAME VARCHAR2(100) NOT NULL,
-    EMAIL VARCHAR2(100) NOT NULL,
-    PASSWORD_HASH VARCHAR2(255) NOT NULL,
-    CREATED_AT TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    UPDATED_AT TIMESTAMP
-);
- */

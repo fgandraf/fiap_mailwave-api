@@ -1,34 +1,64 @@
 package com.mailwave.api.modules.accounts;
 
+import com.mailwave.api.modules.users.User;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.EqualsAndHashCode;
+import java.time.LocalDateTime;
+
+@Getter
+@Setter
+@EqualsAndHashCode
+@Entity
+@Table(name = "TBL_ACCOUNTS")
 public class Account {
 
-    // TO DO: Implements
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_ACCOUNTS")
+    @SequenceGenerator(name = "SEQ_ACCOUNTS", sequenceName = "SEQ_ACCOUNTS", allocationSize = 1)
+    @Column(name = "ACCOUNT_ID")
+    private Long id;
 
+    @Column(name = "EMAIL_ADDRESS")
+    private String emailAddress;
+
+    @Column(name = "PROVIDER")
+    private String provider;
+
+    @Column(name = "PASSWORD_HASH")
+    private String passwordHash;
+
+    @Column(name = "INCOMING_SERVER")
+    private String incomingServer;
+
+    @Column(name = "INCOMING_PORT")
+    private Integer incomingPort;
+
+    @Column(name = "INCOMING_PROTOCOL")
+    private String incomingProtocol;
+
+    @Column(name = "OUTGOING_SERVER")
+    private String outgoingServer;
+
+    @Column(name = "OUTGOING_PORT")
+    private Integer outgoingPort;
+
+    @Column(name = "USE_SSL")
+    private Boolean useSsl;
+
+    @Column(name = "USE_TLS")
+    private Boolean useTls;
+
+    @Column(name = "CREATED_AT")
+    private LocalDateTime createdAt;
+
+    @Column(name = "UPDATED_AT")
+    private LocalDateTime updatedAt;
+
+
+
+    @ManyToOne
+    @JoinColumn(name = "USER_ID", nullable = false)
+    private User user;
 }
-
-/*
---Referência para criação do modelo
-CREATE SEQUENCE SEQ_ACCOUNTS
-    START WITH 1
-    INCREMENT BY 1
-    NOCACHE
-    NOCYCLE;
-
-CREATE TABLE TBL_ACCOUNTS (
-    ACCOUNT_ID NUMBER PRIMARY KEY,
-    USER_ID NUMBER NOT NULL,
-    EMAIL_ADDRESS VARCHAR2(255) NOT NULL,
-    PROVIDER VARCHAR2(100) NOT NULL,
-    PASSWORD_HASH VARCHAR2(255) NOT NULL,
-    INCOMING_SERVER VARCHAR2(255) NOT NULL,
-    INCOMING_PORT NUMBER NOT NULL,
-    INCOMING_PROTOCOL VARCHAR2(10) NOT NULL,
-    OUTGOING_SERVER VARCHAR2(255) NOT NULL,
-    OUTGOING_PORT NUMBER NOT NULL,
-    USE_SSL NUMBER(1) DEFAULT 0,
-    USE_TLS NUMBER(1) DEFAULT 0,
-    CREATED_AT TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    UPDATED_AT TIMESTAMP,
-    FOREIGN KEY (USER_ID) REFERENCES TBL_USERS(USER_ID)
-);
- */

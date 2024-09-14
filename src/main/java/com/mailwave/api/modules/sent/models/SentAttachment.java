@@ -1,25 +1,36 @@
 package com.mailwave.api.modules.sent.models;
 
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.EqualsAndHashCode;
+
+@Getter
+@Setter
+@EqualsAndHashCode
+@Entity
+@Table(name = "TBL_SENT_ATTACHMENTS")
 public class SentAttachment {
 
-    //TO DO: Implements
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_SENT_ATTACHMENTS")
+    @SequenceGenerator(name = "SEQ_SENT_ATTACHMENTS", sequenceName = "SEQ_SENT_ATTACHMENTS", allocationSize = 1)
+    @Column(name = "ATTACHMENT_ID")
+    private Long id;
 
+    @Column(name = "FILE_NAME")
+    private String fileName;
+
+    @Column(name = "FILE_TYPE")
+    private String fileType;
+
+    @Lob
+    @Column(name = "FILE_DATA")
+    private byte[] fileData;
+
+
+
+    @ManyToOne
+    @JoinColumn(name = "MESSAGE_ID", nullable = false)
+    private SentMessage sentMessage;
 }
-
-/*
---Referência para criação do modelo
-CREATE SEQUENCE SEQ_SENT_ATTACHMENTS
-    START WITH 1
-    INCREMENT BY 1
-    NOCACHE
-    NOCYCLE;
-
-CREATE TABLE TBL_SENT_ATTACHMENTS (
-    ATTACHMENT_ID NUMBER PRIMARY KEY,
-    MESSAGE_ID NUMBER NOT NULL,
-    FILE_NAME VARCHAR2(255) NOT NULL,
-    FILE_TYPE VARCHAR2(50),
-    FILE_DATA BLOB,
-    FOREIGN KEY (MESSAGE_ID) REFERENCES TBL_SENT_MESSAGES(MESSAGE_ID)
-);
- */

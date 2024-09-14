@@ -1,27 +1,43 @@
 package com.mailwave.api.modules.sent.models;
 
+import com.mailwave.api.modules.accounts.Account;
+import com.mailwave.api.modules.folders.Folder;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.EqualsAndHashCode;
+import java.time.LocalDateTime;
+
+@Getter
+@Setter
+@EqualsAndHashCode
+@Entity
+@Table(name = "TBL_SENT_MESSAGES")
 public class SentMessage {
 
-    //TO DO: Implements
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_SENT_MESSAGES")
+    @SequenceGenerator(name = "SEQ_SENT_MESSAGES", sequenceName = "SEQ_SENT_MESSAGES", allocationSize = 1)
+    @Column(name = "MESSAGE_ID")
+    private Long id;
 
+    @Column(name = "SUBJECT")
+    private String subject;
+
+    @Lob
+    @Column(name = "BODY")
+    private String body;
+
+    @Column(name = "SENT_AT")
+    private LocalDateTime sentAt;
+
+
+
+    @ManyToOne
+    @JoinColumn(name = "ACCOUNT_ID", nullable = false)
+    private Account account;
+
+    @ManyToOne
+    @JoinColumn(name = "FOLDER_ID")
+    private Folder folder;
 }
-
-/*
---Referência para criação do modelo
-CREATE SEQUENCE SEQ_SENT_MESSAGES
-    START WITH 1
-    INCREMENT BY 1
-    NOCACHE
-    NOCYCLE;
-
-CREATE TABLE TBL_SENT_MESSAGES (
-    MESSAGE_ID NUMBER PRIMARY KEY,
-    ACCOUNT_ID NUMBER NOT NULL,
-    SUBJECT VARCHAR2(255),
-    BODY CLOB,
-    SENT_AT TIMESTAMP,
-    FOLDER_ID NUMBER,
-    FOREIGN KEY (ACCOUNT_ID) REFERENCES TBL_ACCOUNTS(ACCOUNT_ID),
-    FOREIGN KEY (FOLDER_ID) REFERENCES TBL_FOLDERS(FOLDER_ID)
-);
- */

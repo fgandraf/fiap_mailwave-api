@@ -1,25 +1,31 @@
 package com.mailwave.api.modules.tags.models;
 
+import com.mailwave.api.modules.received.models.ReceivedMessage;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.EqualsAndHashCode;
+
+@Getter
+@Setter
+@EqualsAndHashCode
+@Entity
+@Table(name = "TBL_MESSAGE_TAGS")
 public class MessageTag {
 
-    // TO DO: Implements
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_MESSAGE_TAGS")
+    @SequenceGenerator(name = "SEQ_MESSAGE_TAGS", sequenceName = "SEQ_MESSAGE_TAGS", allocationSize = 1)
+    @Column(name = "ID")
+    private Long id;
 
+
+
+    @ManyToOne
+    @JoinColumn(name = "MESSAGE_ID", nullable = false)
+    private ReceivedMessage receivedMessage;
+
+    @ManyToOne
+    @JoinColumn(name = "TAG_ID", nullable = false)
+    private Tag tag;
 }
-
-/*
---Referência para criação do modelo
-CREATE SEQUENCE SEQ_MESSAGE_TAGS
-    START WITH 1
-    INCREMENT BY 1
-    NOCACHE
-    NOCYCLE;
-
-CREATE TABLE TBL_MESSAGE_TAGS (
-    MESSAGE_TAG_ID NUMBER PRIMARY KEY,
-    MESSAGE_ID NUMBER NOT NULL,
-    TAG_ID NUMBER NOT NULL,
-    MESSAGE_TYPE VARCHAR2(10) NOT NULL, -- RECEIVED ou SENT
-    FOREIGN KEY (MESSAGE_ID) REFERENCES TBL_RECEIVED_MESSAGES(MESSAGE_ID) ON DELETE CASCADE,
-    FOREIGN KEY (TAG_ID) REFERENCES TBL_TAGS(TAG_ID) ON DELETE CASCADE
-);
- */
