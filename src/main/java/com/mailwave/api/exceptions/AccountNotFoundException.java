@@ -6,6 +6,4 @@ public class AccountNotFoundException extends RuntimeException{
         super("Conta com Id \"" + id + "\" não encontrada");
     }
 
-    public AccountNotFoundException() {}
-
 }

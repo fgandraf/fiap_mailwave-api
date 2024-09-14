@@ -6,6 +6,4 @@ public class UserNotFoundException extends RuntimeException{
         super("Usuário com Id \"" + id + "\" não encontrado");
     }
 
-    public UserNotFoundException() {}
-
 }
