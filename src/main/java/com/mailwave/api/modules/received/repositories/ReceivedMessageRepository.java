@@ -1,7 +1,9 @@
 package com.mailwave.api.modules.received.repositories;
 
-public interface ReceivedMessageRepository {
+import com.mailwave.api.modules.received.models.ReceivedMessage;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-    // TO DO: Implements
-
+@Repository
+public interface ReceivedMessageRepository extends JpaRepository<ReceivedMessage, Long> {
 }

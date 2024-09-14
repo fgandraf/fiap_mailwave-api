@@ -1,8 +1,8 @@
 package com.mailwave.api.modules.recipient;
 
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface RecipientRepository {
-
-    // TO DO: Implements
-
+@Repository
+public interface RecipientRepository extends JpaRepository<Recipient, Long> {
 }
