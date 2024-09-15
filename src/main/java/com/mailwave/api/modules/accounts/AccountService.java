@@ -39,8 +39,8 @@ public class AccountService {
     public AccountResponse createAccount(AccountCreateRequest model) {
 
         try {
-            // Verifica a existência do objeto User que compõe o objeto Account
-            var existentUser = userService.getUserById(model.userId()).orElseThrow(() -> new UserNotFoundException(model.userId()));
+            // Obtém o User que compõe o objeto Account
+            var existentUser = userService.getById(model.userId());
 
             // Criptografar a senha que vem da requisição
             var encryptedPassword = new BCryptPasswordEncoder().encode(model.password());
@@ -134,8 +134,8 @@ public class AccountService {
             // Instancia o objeto caso encontre a entidade no banco de dados com o id fornecido
             var account = accountRepository.findById(model.id()).orElseThrow(() -> new AccountNotFoundException(model.id()));
 
-            // Verifica a existência do objeto User que compõe o objeto Account
-            var existentUser = userService.getUserById(model.userId()).orElseThrow(() -> new UserNotFoundException(model.userId()));
+            // Obtém o User que compõe o objeto Account
+            var existentUser = userService.getById(model.userId());
 
             // Criptografar a senha que vem da requisição
             var encryptedPassword = new BCryptPasswordEncoder().encode(model.password());

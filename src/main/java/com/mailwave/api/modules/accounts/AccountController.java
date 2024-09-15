@@ -7,6 +7,9 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -31,9 +34,11 @@ public class AccountController {
 
     // Criar uma nova conta
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<AccountResponse> createAccount(@Valid @RequestBody AccountCreateRequest request) {
-        var createdAccount = accountService.createAccount(request);
-        return new ResponseEntity<>(createdAccount, HttpStatus.CREATED);
+        var response = accountService.createAccount(request);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("{/id}").buildAndExpand(response.id()).toUri();
+        return ResponseEntity.created(location).body(response);
     }
 
 
@@ -41,9 +46,10 @@ public class AccountController {
 
     // Buscar todas as contas
     @GetMapping
+    @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<AccountResponse>> getAllAccounts() {
-        var accounts = accountService.getAllAccounts();
-        return new ResponseEntity<>(accounts, HttpStatus.OK);
+        var response = accountService.getAllAccounts();
+        return ResponseEntity.ok(response);
     }
 
 
@@ -51,9 +57,10 @@ public class AccountController {
 
     // Buscar uma conta pelo ID
     @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<AccountResponse> getAccountById(@PathVariable Long id) {
-        var account = accountService.getAccountById(id);
-        return new ResponseEntity<>(account, HttpStatus.OK);
+        var response = accountService.getAccountById(id);
+        return ResponseEntity.ok(response);
     }
 
 
@@ -61,9 +68,10 @@ public class AccountController {
 
     // Atualizar uma conta existente
     @PutMapping
+    @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<AccountResponse> updateAccount(@Valid @RequestBody AccountUpdateRequest request) {
-        var updatedAccount = accountService.updateAccount(request);
-        return new ResponseEntity<>(updatedAccount, HttpStatus.OK);
+        var response = accountService.updateAccount(request);
+        return ResponseEntity.ok(response);
     }
 
 
@@ -71,9 +79,10 @@ public class AccountController {
 
     // Deletar uma conta
     @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> deleteAccount(@PathVariable Long id) {
         accountService.deleteAccount(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return ResponseEntity.noContent().build();
     }
 
 

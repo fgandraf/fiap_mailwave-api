@@ -28,6 +28,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
+    @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<UserLoginResponse> login(@RequestBody @Valid UserLoginRequest loginInput) {
         var usernamePassword = new UsernamePasswordAuthenticationToken(
                 loginInput.email(),
@@ -95,8 +96,9 @@ public class UserController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Page<UserResponse> getAll(Pageable page) {
-        return service.getAll(page);
+    public ResponseEntity<Page<UserResponse>> getAll(Pageable page) {
+        var response = service.getAll(page);
+        return ResponseEntity.ok(response);
     }
 
 }
