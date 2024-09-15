@@ -31,11 +31,11 @@ public class UserService implements UserDetailsService {
         return new UserResponse(user);
     }
 
-    public UserResponse create(UserCreateRequest model) {
+    public UserResponse create(UserCreateRequest request) {
         var user = new User(
                 null,
-                model.email(),
-                new BCryptPasswordEncoder().encode(model.password()),
+                request.email(),
+                new BCryptPasswordEncoder().encode(request.password()),
                 false,
                 UserRole.USER,
                 LocalDateTime.now(),
@@ -44,10 +44,10 @@ public class UserService implements UserDetailsService {
         return new UserResponse(repository.save(user));
     }
 
-    public UserResponse update(UserUpdateRequest model) {
-        var user = repository.findById(model.id()).orElseThrow(() -> new UserNotFoundException(model.id()));
-        user.setEmail(model.email());
-        user.setPasswordHash(new BCryptPasswordEncoder().encode(model.password()));
+    public UserResponse update(UserUpdateRequest request) {
+        var user = repository.findById(request.id()).orElseThrow(() -> new UserNotFoundException(request.id()));
+        user.setEmail(request.email());
+        user.setPasswordHash(new BCryptPasswordEncoder().encode(request.password()));
         user.setUpdatedAt(LocalDateTime.now());
 
         return new UserResponse(repository.save(user));
