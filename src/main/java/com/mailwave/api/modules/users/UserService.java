@@ -1,63 +1,93 @@
 package com.mailwave.api.modules.users;
 
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.mailwave.api.exceptions.UserNotFoundException;
+import com.mailwave.api.modules.users.dtos.UserResponse;
+import com.mailwave.api.modules.users.dtos.UserCreateRequest;
+import com.mailwave.api.modules.users.dtos.UserUpdateRequest;
+import com.mailwave.api.modules.users.enums.UserRole;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserService implements UserDetailsService {
 
-    private final UserRepository userRepository;
+    private final UserRepository repository;
 
     public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
+        this.repository = userRepository;
     }
 
+    public User getByEmail(String email) {
+        var user = repository.findByEmail(email);
+        if (user == null)
+            throw new UserNotFoundException(email);
 
-    // Criar um novo usuário
-    public User createUser(User user) {
-        user.setCreatedAt(LocalDateTime.now());
-        return userRepository.save(user);
+        return user;
     }
 
-    // Buscar todos os usuários
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public UserResponse create(UserCreateRequest model) {
+        var user = new User(
+                null,
+                model.email(),
+                new BCryptPasswordEncoder().encode(model.password()),
+                false,
+                UserRole.USER,
+                LocalDateTime.now(),
+                LocalDateTime.now()
+        );
+        return new UserResponse(repository.save(user));
     }
 
-    // Buscar um usuário por ID
-    public Optional<User> getUserById(Long id) {
-        return userRepository.findById(id);
+    public UserResponse update(UserUpdateRequest model) {
+        var user = repository.findById(model.id()).orElseThrow(() -> new UserNotFoundException(model.id()));
+        user.setEmail(model.email());
+        user.setPasswordHash(new BCryptPasswordEncoder().encode(model.password()));
+        user.setUpdatedAt(LocalDateTime.now());
+
+        return new UserResponse(repository.save(user));
     }
 
-
-    // Atualizar um usuário existente
-    public Optional<User> updateUser(Long id, User userDetails) {
-        return userRepository.findById(id).map(user -> {
-            user.setUsername(userDetails.getUsername());
-            user.setEmail(userDetails.getEmail());
-            user.setPasswordHash(userDetails.getPasswordHash());
-            user.setUpdatedAt(LocalDateTime.now());
-            return userRepository.save(user);
-        });
+    public UserResponse activate(Long id) {
+        var user = repository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+        user.setActive(true);
+        return new UserResponse(repository.save(user));
     }
 
-    // Deletar um usuário
-    public boolean deleteUser(Long id) {
-        return userRepository.findById(id).map(user -> {
-            userRepository.delete(user);
-            return true;
-        }).orElse(false);
+    public UserResponse deactivate(Long id) {
+        var user = repository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+        user.setActive(false);
+        return new UserResponse(repository.save(user));
+    }
+
+    public User getById(Long id) {
+        return repository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+    }
+
+    public UserResponse upgradePermission(Long id) {
+        var user = repository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+        user.setRole(UserRole.ADMIN);
+        return new UserResponse(repository.save(user));
+    }
+
+    public UserResponse downgradePermission(Long id) {
+        var user = repository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+        user.setRole(UserRole.USER);
+        return new UserResponse(repository.save(user));
+    }
+
+    public Page<UserResponse> getAll(Pageable page) {
+        return repository.findAll(page).map(UserResponse::new);
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findByUsername(username);
+        return repository.findByUsername(username);
     }
+
 }
