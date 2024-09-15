@@ -9,7 +9,7 @@ public record TagCreateRequest(
         @Size(min = 1, max = 100, message = "Tag Name must be between 1 and 100 characters")
         String tagName,
 
-        @NotNull(message = "Account ID is required.")
+        @NotNull(message = "Account Id is required.")
         Long accountId
 ) {
 }

@@ -37,29 +37,29 @@ public class AccountService {
 
     //-----Criar uma nova conta
     @Transactional
-    public AccountResponse createAccount(AccountCreateRequest model) {
+    public AccountResponse createAccount(AccountCreateRequest request) {
 
         // Obtém o User que compõe o objeto Account
-        var existentUser = userRepository.findById(model.userId()).orElseThrow(() -> new UserNotFoundException(model.userId()));
+        var existentUser = userRepository.findById(request.userId()).orElseThrow(() -> new UserNotFoundException(request.userId()));
 
 
         try {
             // Criptografar a senha que vem da requisição
-            var encryptedPassword = new BCryptPasswordEncoder().encode(model.password());
+            var encryptedPassword = new BCryptPasswordEncoder().encode(request.password());
 
             // Cria a entidade Account
             var account = new Account(
                     null,
-                    model.emailAddress(),
-                    model.provider(),
+                    request.emailAddress(),
+                    request.provider(),
                     encryptedPassword,
-                    model.incomingServer(),
-                    model.incomingPort(),
-                    model.incomingProtocol(),
-                    model.outgoingServer(),
-                    model.outgoingPort(),
-                    model.useSsl(),
-                    model.useTls(),
+                    request.incomingServer(),
+                    request.incomingPort(),
+                    request.incomingProtocol(),
+                    request.outgoingServer(),
+                    request.outgoingPort(),
+                    request.useSsl(),
+                    request.useTls(),
                     LocalDateTime.now(),
                     LocalDateTime.now(),
                     existentUser
@@ -105,8 +105,6 @@ public class AccountService {
             return accounts;
 
 
-        }catch (NoRecordsFoundException ex) {
-            throw ex;
         } catch (Exception ex) {
             throw new DatabaseOperationException("Erro inesperado.", ex);
         }
@@ -126,30 +124,30 @@ public class AccountService {
 
 
     //-----Atualizar uma conta existente
-    public AccountResponse updateAccount(AccountUpdateRequest model) {
+    public AccountResponse updateAccount(AccountUpdateRequest request) {
 
         // Obtém o User que compõe o objeto Account
-        var existentUser = userRepository.findById(model.userId()).orElseThrow(() -> new UserNotFoundException(model.userId()));
+        var existentUser = userRepository.findById(request.userId()).orElseThrow(() -> new UserNotFoundException(request.userId()));
 
         // Instancia o objeto caso encontre a entidade no banco de dados com o id fornecido
-        var account = accountRepository.findById(model.id()).orElseThrow(() -> new AccountNotFoundException(model.id()));
+        var account = accountRepository.findById(request.id()).orElseThrow(() -> new AccountNotFoundException(request.id()));
 
 
         try{
             // Criptografar a senha que vem da requisição
-            var encryptedPassword = new BCryptPasswordEncoder().encode(model.password());
+            var encryptedPassword = new BCryptPasswordEncoder().encode(request.password());
 
             // Atualiza a entidade Account
-            account.setEmailAddress(model.emailAddress());
-            account.setProvider(model.provider());
+            account.setEmailAddress(request.emailAddress());
+            account.setProvider(request.provider());
             account.setPasswordHash(encryptedPassword);
-            account.setIncomingServer(model.incomingServer());
-            account.setIncomingPort(model.incomingPort());
-            account.setIncomingProtocol(model.incomingProtocol());
-            account.setOutgoingServer(model.outgoingServer());
-            account.setOutgoingPort(model.outgoingPort());
-            account.setUseSsl(model.useSsl());
-            account.setUseTls(model.useTls());
+            account.setIncomingServer(request.incomingServer());
+            account.setIncomingPort(request.incomingPort());
+            account.setIncomingProtocol(request.incomingProtocol());
+            account.setOutgoingServer(request.outgoingServer());
+            account.setOutgoingPort(request.outgoingPort());
+            account.setUseSsl(request.useSsl());
+            account.setUseTls(request.useTls());
             account.setUpdatedAt(LocalDateTime.now());
             account.setUser(existentUser);
 

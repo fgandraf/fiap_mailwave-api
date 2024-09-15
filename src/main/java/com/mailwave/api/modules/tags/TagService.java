@@ -22,13 +22,13 @@ public class TagService {
         this.accountRepository = accountRepository;
     }
 
-    public TagResponse createTag(TagCreateRequest model){
-        var account = accountRepository.findById(model.accountId()).orElseThrow(() -> new AccountNotFoundException(model.accountId()));
+    public TagResponse createTag(TagCreateRequest request){
+        var account = accountRepository.findById(request.accountId()).orElseThrow(() -> new AccountNotFoundException(request.accountId()));
 
         try {
             var tag = new Tag(
                     null,
-                    model.tagName(),
+                    request.tagName(),
                     LocalDateTime.now(),
                     account
             );
@@ -55,9 +55,7 @@ public class TagService {
             results.forEach(tag -> tags.add(new TagResponse(tag)));
 
             return tags;
-
-        }catch (NoRecordsFoundException ex) {
-            throw ex;
+            
         } catch (Exception ex) {
             throw new DatabaseOperationException("Erro inesperado.", ex);
         }
@@ -68,12 +66,12 @@ public class TagService {
         return new TagResponse(tag);
     }
 
-    public TagResponse updateTag(TagUpdateRequest model){
-        var tag = tagRepository.findById(model.id()).orElseThrow(() -> new TagNotFoundException(model.id()));
-        var account = accountRepository.findById(model.accountId()).orElseThrow(() -> new AccountNotFoundException(model.accountId()));
+    public TagResponse updateTag(TagUpdateRequest request){
+        var tag = tagRepository.findById(request.id()).orElseThrow(() -> new TagNotFoundException(request.id()));
+        var account = accountRepository.findById(request.accountId()).orElseThrow(() -> new AccountNotFoundException(request.accountId()));
 
         try{
-            tag.setTagName(model.tagName());
+            tag.setTagName(request.tagName());
             tag.setAccount(account);
 
             var updatedTag = tagRepository.save(tag);

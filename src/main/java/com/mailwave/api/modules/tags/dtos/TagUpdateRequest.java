@@ -5,7 +5,7 @@ import jakarta.validation.constraints.Size;
 
 public record TagUpdateRequest(
 
-        @NotNull(message = "ID is required.")
+        @NotNull(message = "Tag Id is required.")
         Long id,
 
         @NotNull(message = "Tag Name is required.")

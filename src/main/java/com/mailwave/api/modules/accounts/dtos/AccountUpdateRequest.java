@@ -6,16 +6,16 @@ import jakarta.validation.constraints.Size;
 
 public record AccountUpdateRequest(
 
-        @NotNull(message = "Id is required.")
+        @NotNull(message = "Account Id is required.")
         Long id,
 
         @NotNull(message = "Email address is required.")
         @Email(message = "Invalid email addredd")
-        @Size(min = 1, max = 255)
+        @Size(min = 1, max = 255, message = "Email address must be between 1 and 255 characters.")
         String emailAddress,
 
         @NotNull(message = "Provider is required.")
-        @Size(min = 1, max = 100)
+        @Size(min = 1, max = 100, message = "Provider must be between 1 and 100 characters.")
         String provider,
 
         @NotNull(message = "Password is required.")

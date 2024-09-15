@@ -22,13 +22,13 @@ public class FolderService {
         this.accountRepository = accountRepository;
     }
 
-    public FolderResponse createFolder(FolderCreateRequest model) {
-        var account = accountRepository.findById(model.accountId()).orElseThrow(() -> new AccountNotFoundException(model.accountId()));
+    public FolderResponse createFolder(FolderCreateRequest request) {
+        var account = accountRepository.findById(request.accountId()).orElseThrow(() -> new AccountNotFoundException(request.accountId()));
 
         try {
             var folder = new Folder(
                     null,
-                    model.folderName(),
+                    request.folderName(),
                     LocalDateTime.now(),
                     account
             );
@@ -57,8 +57,6 @@ public class FolderService {
 
             return folders;
 
-        }catch (NoRecordsFoundException ex) {
-            throw ex;
         } catch (Exception ex) {
             throw new DatabaseOperationException("Erro inesperado.", ex);
         }
@@ -72,12 +70,12 @@ public class FolderService {
     }
 
 
-    public FolderResponse updateFolder(FolderUpdateRequest model) {
-        var folder = folderRepository.findById(model.id()).orElseThrow(() -> new FolderNotFoundException(model.id()));
-        var account = accountRepository.findById(model.accountId()).orElseThrow(() -> new AccountNotFoundException(model.accountId()));
+    public FolderResponse updateFolder(FolderUpdateRequest request) {
+        var folder = folderRepository.findById(request.id()).orElseThrow(() -> new FolderNotFoundException(request.id()));
+        var account = accountRepository.findById(request.accountId()).orElseThrow(() -> new AccountNotFoundException(request.accountId()));
 
         try{
-            folder.setFolderName(model.folderName());
+            folder.setFolderName(request.folderName());
             folder.setAccount(account);
 
             var updatedFolder = folderRepository.save(folder);
