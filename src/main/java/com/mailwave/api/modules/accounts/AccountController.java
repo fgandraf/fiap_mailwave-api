@@ -37,7 +37,7 @@ public class AccountController {
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<AccountResponse> createAccount(@Valid @RequestBody AccountCreateRequest request) {
         var response = accountService.createAccount(request);
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("{/id}").buildAndExpand(response.id()).toUri();
+        var location = ServletUriComponentsBuilder.fromCurrentRequest().path("{/id}").buildAndExpand(response.id()).toUri();
         return ResponseEntity.created(location).body(response);
     }
 
@@ -59,8 +59,8 @@ public class AccountController {
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<AccountResponse> getAccountById(@PathVariable Long id) {
-        var accountResponse = accountService.getAccountById(id);
-        return ResponseEntity.ok(new AccountResponse(accountResponse));
+        var response = accountService.getAccountById(id);
+        return ResponseEntity.ok(response);
     }
 
 

@@ -4,6 +4,7 @@ import com.mailwave.api.exceptions.*;
 import com.mailwave.api.modules.accounts.dtos.AccountResponse;
 import com.mailwave.api.modules.accounts.dtos.AccountCreateRequest;
 import com.mailwave.api.modules.accounts.dtos.AccountUpdateRequest;
+import com.mailwave.api.modules.users.UserRepository;
 import com.mailwave.api.modules.users.UserService;
 import jakarta.transaction.Transactional;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -19,16 +20,16 @@ public class AccountService {
 
     //-----Repositórios que serão usados por este serviço
     private final AccountRepository accountRepository;
-    private final UserService userService;
+    private final UserRepository userRepository;
 
 
 
 
     //-----Construtor padrão injeta as dependências
     //-----Evitar a anotação @Autowired
-    public AccountService(AccountRepository accountRepository, UserService userService) {
+    public AccountService(AccountRepository accountRepository, UserRepository userRepository) {
         this.accountRepository = accountRepository;
-        this.userService = userService;
+        this.userRepository = userRepository;
     }
 
 
@@ -38,10 +39,11 @@ public class AccountService {
     @Transactional
     public AccountResponse createAccount(AccountCreateRequest model) {
 
-        try {
-            // Obtém o User que compõe o objeto Account
-            var existentUser = userService.getById(model.userId());
+        // Obtém o User que compõe o objeto Account
+        var existentUser = userRepository.findById(model.userId()).orElseThrow(() -> new UserNotFoundException(model.userId()));
 
+
+        try {
             // Criptografar a senha que vem da requisição
             var encryptedPassword = new BCryptPasswordEncoder().encode(model.password());
 
@@ -115,9 +117,9 @@ public class AccountService {
 
 
     //-----Buscar uma conta pelo ID
-    public Account getAccountById(Long id) {
-        // Retorna o objeto caso encontre a entidade no banco de dados com o id fornecido
-        return accountRepository.findById(id).orElseThrow(() -> new AccountNotFoundException(id));
+    public AccountResponse getAccountById(Long id) {
+        var account = accountRepository.findById(id).orElseThrow(() -> new AccountNotFoundException(id));
+        return new AccountResponse(account);
     }
 
 
@@ -126,13 +128,14 @@ public class AccountService {
     //-----Atualizar uma conta existente
     public AccountResponse updateAccount(AccountUpdateRequest model) {
 
+        // Obtém o User que compõe o objeto Account
+        var existentUser = userRepository.findById(model.userId()).orElseThrow(() -> new UserNotFoundException(model.userId()));
+
+        // Instancia o objeto caso encontre a entidade no banco de dados com o id fornecido
+        var account = accountRepository.findById(model.id()).orElseThrow(() -> new AccountNotFoundException(model.id()));
+
+
         try{
-            // Instancia o objeto caso encontre a entidade no banco de dados com o id fornecido
-            var account = accountRepository.findById(model.id()).orElseThrow(() -> new AccountNotFoundException(model.id()));
-
-            // Obtém o User que compõe o objeto Account
-            var existentUser = userService.getById(model.userId());
-
             // Criptografar a senha que vem da requisição
             var encryptedPassword = new BCryptPasswordEncoder().encode(model.password());
 
