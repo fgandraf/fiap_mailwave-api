@@ -25,9 +25,16 @@ public class Recipient {
     @Column(name = "TYPE")
     private String type; // TO, CC, BCC
 
-
-
     @ManyToOne
     @JoinColumn(name = "MESSAGE_ID", nullable = false)
     private SentMessage sentMessage;
+
+    public Recipient(Long id, String recipientEmail, String type, SentMessage sentMessage) {
+        this.id = id;
+        this.recipientEmail = recipientEmail;
+        this.type = type;
+        this.sentMessage = sentMessage;
+    }
+
+    public Recipient() {}
 }

@@ -1,12 +1,13 @@
 package com.mailwave.api.modules.recipient;
 
-import com.mailwave.api.modules.recipient.dtos.RecipientRequest;
+import com.mailwave.api.modules.recipient.dtos.RecipientCreateRequest;
 import com.mailwave.api.modules.recipient.dtos.RecipientResponse;
+import com.mailwave.api.modules.recipient.dtos.RecipientUpdateRequest;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.util.List;
 
 @RestController
@@ -14,21 +15,23 @@ import java.util.List;
 public class RecipientController {
 
     private final RecipientService recipientService;
+
     public RecipientController(RecipientService recipientService) {
         this.recipientService = recipientService;
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<RecipientResponse> createRecipient(@Valid @RequestBody RecipientRequest request) {
-        var response = recipientService.createRecipient(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    public ResponseEntity<RecipientResponse> createRecipient(@Valid @RequestBody RecipientCreateRequest request) {
+        var createRecipient = recipientService.createRecipient(request);
+        var location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(createRecipient.id()).toUri();
+        return ResponseEntity.created(location).body(createRecipient);
     }
 
-    @GetMapping
+    @GetMapping("/message/{messageId}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<RecipientResponse>> getAllRecipients() {
-        var response = recipientService.getAllRecipients();
+    public ResponseEntity<List<RecipientResponse>> getAllRecipientsBySentMessageId(@PathVariable Long messageId) {
+        var response = recipientService.getAllRecipientsBySentMessageId(messageId);
         return ResponseEntity.ok(response);
     }
 
@@ -39,10 +42,10 @@ public class RecipientController {
         return ResponseEntity.ok(response);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<RecipientResponse> updateRecipient(@Valid @RequestBody RecipientRequest request, @PathVariable Long id) {
-        var response = recipientService.updateRecipient(request, id);
+    public ResponseEntity<RecipientResponse> updateRecipient(@Valid @RequestBody RecipientUpdateRequest request) {
+        var response = recipientService.updateRecipient(request);
         return ResponseEntity.ok(response);
     }
 
