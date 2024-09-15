@@ -59,8 +59,8 @@ public class AccountController {
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<AccountResponse> getAccountById(@PathVariable Long id) {
-        var response = accountService.getAccountById(id);
-        return ResponseEntity.ok(response);
+        var accountResponse = accountService.getAccountById(id);
+        return ResponseEntity.ok(new AccountResponse(accountResponse));
     }
 
 

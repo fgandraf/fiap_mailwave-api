@@ -115,13 +115,9 @@ public class AccountService {
 
 
     //-----Buscar uma conta pelo ID
-    public AccountResponse getAccountById(Long id) {
-
-        // Instancia o objeto caso encontre a entidade no banco de dados com o id fornecido
-        var account = accountRepository.findById(id).orElseThrow(() -> new AccountNotFoundException(id));
-
-        // Retorna um novo registro(record) construído a partir da entidade encontrada
-        return new AccountResponse(account);
+    public Account getAccountById(Long id) {
+        // Retorna o objeto caso encontre a entidade no banco de dados com o id fornecido
+        return accountRepository.findById(id).orElseThrow(() -> new AccountNotFoundException(id));
     }
 
 
