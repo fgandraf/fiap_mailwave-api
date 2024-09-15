@@ -3,6 +3,7 @@ package com.mailwave.api.modules.folders;
 import com.mailwave.api.modules.folders.dtos.FolderCreateRequest;
 import com.mailwave.api.modules.folders.dtos.FolderResponse;
 import com.mailwave.api.modules.folders.dtos.FolderUpdateRequest;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -19,7 +20,7 @@ public class FolderController {
     }
 
     @PostMapping
-    public ResponseEntity<FolderResponse> createFolder(@RequestBody FolderCreateRequest folder) {
+    public ResponseEntity<FolderResponse> createFolder(@Valid @RequestBody FolderCreateRequest folder) {
         var createdFolder = folderService.createFolder(folder);
         var location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(createdFolder.id()).toUri();
         return ResponseEntity.created(location).body(createdFolder);
@@ -38,7 +39,7 @@ public class FolderController {
     }
 
     @PutMapping
-    public ResponseEntity<FolderResponse> updateFolder(@RequestBody FolderUpdateRequest request) {
+    public ResponseEntity<FolderResponse> updateFolder(@Valid @RequestBody FolderUpdateRequest request) {
         var response = folderService.updateFolder(request);
         return ResponseEntity.ok(response);
     }
