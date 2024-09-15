@@ -1,63 +1,57 @@
 package com.mailwave.api.modules.sent.services;
 
-import com.mailwave.api.modules.accounts.Account;
-import com.mailwave.api.modules.accounts.AccountService;
-import com.mailwave.api.modules.folders.FolderService;
+import com.mailwave.api.exceptions.AccountNotFoundException;
+import com.mailwave.api.exceptions.DatabaseOperationException;
+import com.mailwave.api.modules.accounts.AccountRepository;
+import com.mailwave.api.modules.folders.FolderRepository;
 import com.mailwave.api.modules.sent.dtos.message.SentMessageRequest;
 import com.mailwave.api.modules.sent.dtos.message.SentMessageResponse;
 import com.mailwave.api.modules.sent.models.SentMessage;
 import com.mailwave.api.modules.sent.repositories.SentMessageRepository;
 import com.mailwave.api.exceptions.SentMessageNotFoundException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
-import java.time.LocalDateTime;
 
 @Service
 public class SentMessageService {
     private final SentMessageRepository sentMessageRepository;
-    private final AccountService accountService;
-    private final FolderService folderService;
+    private final AccountRepository accountRepository;
+    private final FolderRepository folderRepository;
 
-    public SentMessageService(SentMessageRepository sentMessageRepository, AccountService accountService, FolderService folderService) {
-        this.sentMessageRepository = sentMessageRepository;
-        this.accountService = accountService;
-        this.folderService = folderService;
+   public SentMessageService(SentMessageRepository sentMessageRepository, AccountRepository accountRepository, FolderRepository folderRepository) {
+       this.sentMessageRepository = sentMessageRepository;
+       this.accountRepository = accountRepository;
+       this.folderRepository = folderRepository;
+   }
+
+    public SentMessageResponse createSentMessage(SentMessageRequest request) {
+        var account = accountRepository.findById(request.accountId()).orElseThrow(() -> new AccountNotFoundException(request.accountId()));
+        var folder = request.folderId() != null ? folderRepository.findById(request.folderId()).orElse(null) : null;
+
+        try{
+            var messageToSent = new SentMessage(
+                    null,
+                    request.subject(),
+                    request.body(),
+                    request.sentAt(),
+                    account,
+                    folder
+            );
+
+            var sentMessage = sentMessageRepository.save(messageToSent);
+
+            return new SentMessageResponse(sentMessage);
+
+        }catch (DataIntegrityViolationException ex) {
+            throw new DatabaseOperationException("Erro ao salvar: dados inválidos ou em conflito.", ex);
+        } catch (Exception ex) {
+            throw new DatabaseOperationException("Erro inesperado ao salvar.", ex);
+        }
     }
 
-    public SentMessageResponse sendMessage(SentMessageRequest request) {
-        var accountResponse = accountService.getAccountById(request.accountId());
-        var account = new Account(
-                accountResponse.id(),
-                accountResponse.emailAddress(),
-                accountResponse.provider(),
-                null,
-                accountResponse.incomingServer(),
-                accountResponse.incomingPort(),
-                accountResponse.incomingProtocol(),
-                accountResponse.outgoingServer(),
-                accountResponse.outgoingPort(),
-                accountResponse.useSsl(),
-                accountResponse.useTls(),
-                accountResponse.createdAt(),
-                accountResponse.updatedAt(),
-                null
-        );
 
-        var folder = request.folderId() != null ? folderService.getFolderById(request.folderId()).orElse(null) : null;
-
-        var sentMessage = new SentMessage();
-        sentMessage.setAccount(account);
-        sentMessage.setFolder(folder);
-        sentMessage.setSubject(request.subject());
-        sentMessage.setBody(request.body());
-        sentMessage.setSentAt(LocalDateTime.now());
-
-        var savedMessage = sentMessageRepository.save(sentMessage);
-
-        return new SentMessageResponse(savedMessage.getId(), savedMessage.getSubject(), savedMessage.getBody(), savedMessage.getSentAt());
-    }
-
-    public SentMessage getSentMessageById(Long id) {
-        return sentMessageRepository.findById(id)
-                .orElseThrow(() -> new SentMessageNotFoundException(id));
+    public SentMessageResponse getSentMessageById(Long id) {
+       var sentMessage = sentMessageRepository.findById(id).orElseThrow(() -> new SentMessageNotFoundException(id));
+       return new SentMessageResponse(sentMessage);
     }
 }

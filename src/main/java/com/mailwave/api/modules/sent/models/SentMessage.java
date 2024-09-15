@@ -31,8 +31,6 @@ public class SentMessage {
     @Column(name = "SENT_AT")
     private LocalDateTime sentAt;
 
-
-
     @ManyToOne
     @JoinColumn(name = "ACCOUNT_ID", nullable = false)
     private Account account;
@@ -40,4 +38,15 @@ public class SentMessage {
     @ManyToOne
     @JoinColumn(name = "FOLDER_ID")
     private Folder folder;
+
+    public SentMessage(Long id, String subject, String body, LocalDateTime sentAt, Account account, Folder folder) {
+        this.id = id;
+        this.subject = subject;
+        this.body = body;
+        this.sentAt = sentAt;
+        this.account = account;
+        this.folder = folder;
+    }
+
+    public SentMessage() {}
 }
