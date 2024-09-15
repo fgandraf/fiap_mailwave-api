@@ -23,13 +23,12 @@ public class UserService implements UserDetailsService {
         this.repository = userRepository;
     }
 
-    public User getByEmail(String email) {
+    public UserResponse getByEmail(String email) {
         var user = repository.getByEmail(email);
         if (user == null)
             throw new UserNotFoundException(email);
 
-
-        return user;
+        return new UserResponse(user);
     }
 
     public UserResponse create(UserCreateRequest model) {
@@ -66,8 +65,9 @@ public class UserService implements UserDetailsService {
         return new UserResponse(repository.save(user));
     }
 
-    public User getById(Long id) {
-        return repository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+    public UserResponse getById(Long id) {
+        var user = repository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+        return new UserResponse(user);
     }
 
     public UserResponse upgradePermission(Long id) {

@@ -46,14 +46,14 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<UserResponse> getByUsername(@PathVariable String email) {
         var user = service.getByEmail(email);
-        return ResponseEntity.ok(new UserResponse(user));
+        return ResponseEntity.ok(user);
     }
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<UserResponse> getById(@PathVariable Long id) {
         var user = service.getById(id);
-        return ResponseEntity.ok(new UserResponse(user));
+        return ResponseEntity.ok(user);
     }
 
     @PostMapping("/register")
