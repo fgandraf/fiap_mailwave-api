@@ -86,8 +86,8 @@ public class FolderService {
             folder.setFolderName(model.folderName());
             folder.setAccount(account);
 
-            Folder savedFolder = folderRepository.save(folder);
-            return new FolderResponse(savedFolder);
+            Folder updatedFolder = folderRepository.save(folder);
+            return new FolderResponse(updatedFolder);
         }catch (Exception ex){
             throw new DatabaseOperationException("Erro inesperado ao salvar.", ex);
         }
