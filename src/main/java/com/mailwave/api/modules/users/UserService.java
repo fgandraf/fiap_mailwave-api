@@ -1,17 +1,24 @@
 package com.mailwave.api.modules.users;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
 
     // Criar um novo usuário
     public User createUser(User user) {
@@ -28,6 +35,7 @@ public class UserService {
     public Optional<User> getUserById(Long id) {
         return userRepository.findById(id);
     }
+
 
     // Atualizar um usuário existente
     public Optional<User> updateUser(Long id, User userDetails) {
@@ -46,5 +54,10 @@ public class UserService {
             userRepository.delete(user);
             return true;
         }).orElse(false);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return userRepository.findByUsername(username);
     }
 }
