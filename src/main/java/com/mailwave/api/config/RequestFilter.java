@@ -30,7 +30,7 @@ public class RequestFilter extends OncePerRequestFilter {
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             var token = authorizationHeader.replace("Bearer ", "").trim();
             var login = tokenService.validateToken(token);
-            var user = repository.findByUsername(login);
+            var user = repository.findByEmail(login);
             var authenticationToken = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
 
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);

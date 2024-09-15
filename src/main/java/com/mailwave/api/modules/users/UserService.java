@@ -24,9 +24,10 @@ public class UserService implements UserDetailsService {
     }
 
     public User getByEmail(String email) {
-        var user = repository.findByEmail(email);
+        var user = repository.getByEmail(email);
         if (user == null)
             throw new UserNotFoundException(email);
+
 
         return user;
     }
@@ -87,7 +88,7 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return repository.findByUsername(username);
+        return repository.findByEmail(username);
     }
 
 }
