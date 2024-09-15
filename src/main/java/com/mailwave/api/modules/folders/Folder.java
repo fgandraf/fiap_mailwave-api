@@ -26,9 +26,16 @@ public class Folder {
     @Column(name = "CREATED_AT")
     private LocalDateTime createdAt;
 
-
-
     @ManyToOne
     @JoinColumn(name = "ACCOUNT_ID", nullable = false)
     private Account account;
+
+    public Folder(Long id, String folderName, LocalDateTime createdAt, Account account) {
+        this.id = id;
+        this.folderName = folderName;
+        this.createdAt = createdAt;
+        this.account = account;
+    }
+
+    public Folder() {}
 }
