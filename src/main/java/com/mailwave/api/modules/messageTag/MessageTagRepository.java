@@ -1,4 +1,4 @@
-package com.mailwave.api.modules.tags.repositories;
+package com.mailwave.api.modules.messageTag;
 
 public interface MessageTagRepository {
 

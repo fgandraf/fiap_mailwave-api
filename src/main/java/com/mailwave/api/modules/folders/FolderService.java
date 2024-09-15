@@ -37,8 +37,6 @@ public class FolderService {
 
             return new FolderResponse(savedFolder);
 
-        }catch (IllegalArgumentException ex) {
-            throw new PasswordEncodingException("Erro ao codificar a senha", ex);
         }catch (DataIntegrityViolationException ex) {
             throw new DatabaseOperationException("Erro ao salvar: dados inválidos ou em conflito.", ex);
         } catch (Exception ex) {

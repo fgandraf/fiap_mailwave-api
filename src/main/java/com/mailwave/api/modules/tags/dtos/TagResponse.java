@@ -1,6 +1,6 @@
-package com.mailwave.api.modules.tags.dtos.tag;
+package com.mailwave.api.modules.tags.dtos;
 
-import com.mailwave.api.modules.tags.models.Tag;
+import com.mailwave.api.modules.tags.Tag;
 
 import java.time.LocalDateTime;
 

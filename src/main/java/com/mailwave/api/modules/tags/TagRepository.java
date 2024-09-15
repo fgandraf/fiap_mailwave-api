@@ -1,6 +1,5 @@
-package com.mailwave.api.modules.tags.repositories;
+package com.mailwave.api.modules.tags;
 
-import com.mailwave.api.modules.tags.models.Tag;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface TagRepository extends JpaRepository<Tag, Long> {

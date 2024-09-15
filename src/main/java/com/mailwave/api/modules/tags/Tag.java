@@ -1,4 +1,4 @@
-package com.mailwave.api.modules.tags.models;
+package com.mailwave.api.modules.tags;
 
 import com.mailwave.api.modules.accounts.Account;
 import jakarta.persistence.*;
@@ -26,9 +26,16 @@ public class Tag {
     @Column(name = "CREATED_AT")
     private LocalDateTime createdAt;
 
-
-
     @ManyToOne
     @JoinColumn(name = "ACCOUNT_ID", nullable = false)
     private Account account;
+
+    public Tag(Long id, String tagName, LocalDateTime createdAt, Account account) {
+        this.id = id;
+        this.tagName = tagName;
+        this.createdAt = createdAt;
+        this.account = account;
+    }
+
+    public Tag() {}
 }

@@ -1,4 +1,4 @@
-package com.mailwave.api.modules.tags.controllers;
+package com.mailwave.api.modules.messageTag;
 
 public class MessageTagController {
 

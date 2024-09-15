@@ -1,10 +1,9 @@
-package com.mailwave.api.modules.tags.controllers;
+package com.mailwave.api.modules.tags;
 
-import com.mailwave.api.modules.tags.dtos.tag.TagCreateRequest;
-import com.mailwave.api.modules.tags.dtos.tag.TagResponse;
-import com.mailwave.api.modules.tags.dtos.tag.TagUpdateRequest;
-import com.mailwave.api.modules.tags.models.Tag;
-import com.mailwave.api.modules.tags.services.TagService;
+import com.mailwave.api.modules.tags.dtos.TagCreateRequest;
+import com.mailwave.api.modules.tags.dtos.TagResponse;
+import com.mailwave.api.modules.tags.dtos.TagUpdateRequest;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -23,27 +22,27 @@ public class TagController {
     }
 
     @PostMapping
-    public ResponseEntity<TagResponse> createTag(@RequestBody TagCreateRequest tag) {
-        TagResponse createdTag = tagService.createTag(tag);
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(createdTag.id()).toUri();
+    public ResponseEntity<TagResponse> createTag(@Valid @RequestBody TagCreateRequest tag) {
+        var createdTag = tagService.createTag(tag);
+        var location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(createdTag.id()).toUri();
         return ResponseEntity.created(location).body(createdTag);
     }
 
     @GetMapping
     public ResponseEntity<List<TagResponse>> getAllTags(){
-        List<TagResponse> allTags = tagService.getAllTags();
-        return ResponseEntity.ok(allTags);
+        var tags = tagService.getAllTags();
+        return ResponseEntity.ok(tags);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<TagResponse> getTagById(@PathVariable("id") Long id){
-        Tag tag = tagService.getTagById(id);
-        return ResponseEntity.ok(new TagResponse(tag));
+        var tag = tagService.getTagById(id);
+        return ResponseEntity.ok(tag);
     }
 
     @PutMapping
-    public ResponseEntity<TagResponse> updateTag(@RequestBody TagUpdateRequest tag){
-        TagResponse updatedTag = tagService.updateTag(tag);
+    public ResponseEntity<TagResponse> updateTag(@Valid @RequestBody TagUpdateRequest tag){
+        var updatedTag = tagService.updateTag(tag);
         return ResponseEntity.ok(updatedTag);
     }
 
