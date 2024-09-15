@@ -1,7 +1,8 @@
 package com.mailwave.api.modules.sent.repositories;
 
-public interface SentAttachmentRepository {
+import com.mailwave.api.modules.sent.models.SentAttachment;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-    // TO DO: Implements
+public interface SentAttachmentRepository extends JpaRepository<SentAttachment, Long> {
 
 }

@@ -1,47 +1,99 @@
 package com.mailwave.api.modules.recipient;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.mailwave.api.exceptions.DatabaseOperationException;
+import com.mailwave.api.exceptions.NoRecordsFoundException;
+import com.mailwave.api.modules.recipient.dtos.RecipientRequest;
+import com.mailwave.api.modules.recipient.dtos.RecipientResponse;
+import com.mailwave.api.modules.sent.services.SentMessageService;
+import com.mailwave.api.exceptions.RecipientNotFoundException;
+import jakarta.transaction.Transactional;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class RecipientService {
 
-    @Autowired
-    private RecipientRepository recipientRepository;
-
-    // Criar um novo destinatário
-    public Recipient createRecipient(Recipient recipient) {
-        return recipientRepository.save(recipient);
+    private final RecipientRepository recipientRepository;
+    private final SentMessageService sentMessageService;
+    public RecipientService(RecipientRepository recipientRepository, SentMessageService sentMessageService) {
+        this.recipientRepository = recipientRepository;
+        this.sentMessageService = sentMessageService;
     }
 
-    // Buscar todos os destinatários
-    public List<Recipient> getAllRecipients() {
-        return recipientRepository.findAll();
+    @Transactional
+    public RecipientResponse createRecipient(RecipientRequest model) {
+        try {
+            var sentMessage = sentMessageService.getSentMessageById(model.messageId());
+
+            var recipient = new Recipient();
+            recipient.setRecipientEmail(model.recipientEmail());
+            recipient.setType(model.type());
+            recipient.setSentMessage(sentMessage);
+
+            var savedRecipient = recipientRepository.save(recipient);
+            return new RecipientResponse(savedRecipient.getId(), savedRecipient.getRecipientEmail(), savedRecipient.getType(), savedRecipient.getSentMessage().getId());
+        } catch (DataIntegrityViolationException ex) {
+            throw new DatabaseOperationException("Erro ao salvar: dados inválidos ou em conflito.", ex);
+        } catch (Exception ex) {
+            throw new DatabaseOperationException("Erro inesperado ao salvar.", ex);
+        }
     }
 
-    // Buscar um destinatário por ID
-    public Optional<Recipient> getRecipientById(Long id) {
-        return recipientRepository.findById(id);
+    public  List<RecipientResponse> getAllRecipients() {
+        var recipients = new ArrayList<RecipientResponse>();
+
+        try{
+            var results = recipientRepository.findAll();
+
+            if (results.isEmpty()) {
+                throw new NoRecordsFoundException();
+            }
+
+            results.forEach(result -> recipients.add(new RecipientResponse(result.getId(), result.getRecipientEmail(),result.getType(),result.getSentMessage().getId())));
+
+            return recipients;
+        } catch (NoRecordsFoundException ex) {
+            throw ex;
+        } catch (Exception ex) {
+            throw new DatabaseOperationException("Erro inesperado ao buscar destinatários.", ex);
+        }
     }
 
-    // Atualizar um destinatário existente
-    public Optional<Recipient> updateRecipient(Long id, Recipient recipientDetails) {
-        return recipientRepository.findById(id).map(recipient -> {
-            recipient.setRecipientEmail(recipientDetails.getRecipientEmail());
-            recipient.setType(recipientDetails.getType());
-            return recipientRepository.save(recipient);
-        });
+    public RecipientResponse getRecipientById(Long id) {
+        var recipient = recipientRepository.findById(id).orElseThrow(() -> new RecipientNotFoundException(id));
+        return  new RecipientResponse(recipient.getId(), recipient.getRecipientEmail(), recipient.getType(), recipient.getSentMessage().getId());
     }
 
-    // Deletar um destinatário
-    public boolean deleteRecipient(Long id) {
-        return recipientRepository.findById(id).map(recipient -> {
+    public RecipientResponse updateRecipient(RecipientRequest model, Long id) {
+        try {
+            var recipient = recipientRepository.findById(id).orElseThrow(()-> new RecipientNotFoundException(id));
+
+            var sentMessage = sentMessageService.getSentMessageById(model.getSentMessageId());
+
+            recipient.setRecipientEmail(model.recipientEmail());
+            recipient.setType(model.type());
+            recipient.setSentMessage(sentMessage);
+
+            var savedRecipient = recipientRepository.save(recipient);
+
+            return new RecipientResponse(savedRecipient.getId(), savedRecipient.getRecipientEmail(), savedRecipient.getType(), savedRecipient.getSentMessage().getId());
+
+        } catch (Exception ex) {
+            throw new DatabaseOperationException("Erro ao atualizar o destinatário.", ex);
+        }
+    }
+
+    public void deleteRecipient(Long id) {
+        var recipient = recipientRepository.findById(id).orElseThrow(()-> new RecipientNotFoundException(id));
+        try {
             recipientRepository.delete(recipient);
-            return true;
-        }).orElse(false);
+        } catch (DataIntegrityViolationException ex) {
+            throw new DatabaseOperationException("Erro ao deletar: pode haver dados relacionados.", ex);
+        } catch (Exception ex) {
+            throw new DatabaseOperationException("Erro inesperado ao deletar.", ex);
+        }
     }
 }
