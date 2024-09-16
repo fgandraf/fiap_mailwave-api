@@ -1,6 +1,6 @@
 package com.mailwave.api.modules.folders;
 
-import com.mailwave.api.modules.received.models.ReceivedMessage;
+import com.mailwave.api.modules.receivedMessage.models.ReceivedMessage;
 import com.mailwave.api.modules.accounts.Account;
 import jakarta.persistence.*;
 import lombok.Getter;

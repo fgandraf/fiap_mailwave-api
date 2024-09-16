@@ -1,6 +1,6 @@
-package com.mailwave.api.modules._messageTag.models;
+package com.mailwave.api.modules.messageTag.models;
 
-import com.mailwave.api.modules.received.models.ReceivedMessage;
+import com.mailwave.api.modules.receivedMessage.models.ReceivedMessage;
 import com.mailwave.api.modules.tags.Tag;
 import jakarta.persistence.*;
 import lombok.Getter;

@@ -1,4 +1,4 @@
-package com.mailwave.api.modules.received.models;
+package com.mailwave.api.modules.sentMessage.models;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -9,12 +9,12 @@ import lombok.EqualsAndHashCode;
 @Setter
 @EqualsAndHashCode
 @Entity
-@Table(name = "TBL_RECEIVED_ATTACHMENTS")
-public class ReceivedAttachment {
+@Table(name = "TBL_SENT_ATTACHMENTS")
+public class SentAttachment {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_RECEIVED_ATTACHMENTS")
-    @SequenceGenerator(name = "SEQ_RECEIVED_ATTACHMENTS", sequenceName = "SEQ_RECEIVED_ATTACHMENTS", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_SENT_ATTACHMENTS")
+    @SequenceGenerator(name = "SEQ_SENT_ATTACHMENTS", sequenceName = "SEQ_SENT_ATTACHMENTS", allocationSize = 1)
     @Column(name = "ATTACHMENT_ID")
     private Long id;
 
@@ -29,7 +29,8 @@ public class ReceivedAttachment {
     private byte[] fileData;
 
 
+
     @ManyToOne
     @JoinColumn(name = "MESSAGE_ID", nullable = false)
-    private ReceivedMessage receivedMessage;
+    private SentMessage sentMessage;
 }

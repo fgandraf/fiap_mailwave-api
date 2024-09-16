@@ -1,12 +1,12 @@
-package com.mailwave.api.modules.received;
+package com.mailwave.api.modules.receivedMessage;
 
 import com.mailwave.api.exceptions.*;
-import com.mailwave.api.modules._messageTag.models.ReceivedMessageTag;
-import com.mailwave.api.modules._messageTag.repositories.ReceivedMessageTagRepository;
-import com.mailwave.api.modules.received.dtos.ReceivedMessageCreateRequest;
-import com.mailwave.api.modules.received.dtos.ReceivedMessageIndexResponse;
-import com.mailwave.api.modules.received.dtos.ReceivedMessageResponse;
-import com.mailwave.api.modules.received.models.ReceivedMessage;
+import com.mailwave.api.modules.messageTag.models.ReceivedMessageTag;
+import com.mailwave.api.modules.messageTag.repositories.ReceivedMessageTagRepository;
+import com.mailwave.api.modules.receivedMessage.dtos.ReceivedMessageCreateRequest;
+import com.mailwave.api.modules.receivedMessage.dtos.ReceivedMessageIndexResponse;
+import com.mailwave.api.modules.receivedMessage.dtos.ReceivedMessageResponse;
+import com.mailwave.api.modules.receivedMessage.models.ReceivedMessage;
 import com.mailwave.api.modules.accounts.AccountRepository;
 import com.mailwave.api.modules.folders.FolderRepository;
 import com.mailwave.api.modules.tags.TagRepository;

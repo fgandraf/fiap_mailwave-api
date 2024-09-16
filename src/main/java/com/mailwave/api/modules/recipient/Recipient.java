@@ -1,6 +1,6 @@
 package com.mailwave.api.modules.recipient;
 
-import com.mailwave.api.modules._sent.models.SentMessage;
+import com.mailwave.api.modules.sentMessage.models.SentMessage;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

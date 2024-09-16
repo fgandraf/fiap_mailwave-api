@@ -1,6 +1,6 @@
 package com.mailwave.api.modules.accounts;
 
-import com.mailwave.api.modules.received.models.ReceivedMessage;
+import com.mailwave.api.modules.receivedMessage.models.ReceivedMessage;
 import com.mailwave.api.modules.users.User;
 import jakarta.persistence.*;
 import lombok.Getter;

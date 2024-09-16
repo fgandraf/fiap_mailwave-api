@@ -1,6 +1,6 @@
-package com.mailwave.api.modules.received;
+package com.mailwave.api.modules.receivedMessage;
 
-import com.mailwave.api.modules.received.models.ReceivedMessage;
+import com.mailwave.api.modules.receivedMessage.models.ReceivedMessage;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

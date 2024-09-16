@@ -1,6 +1,6 @@
-package com.mailwave.api.modules.received.models;
+package com.mailwave.api.modules.receivedMessage.models;
 
-import com.mailwave.api.modules._messageTag.models.ReceivedMessageTag;
+import com.mailwave.api.modules.messageTag.models.ReceivedMessageTag;
 import com.mailwave.api.modules.accounts.Account;
 import com.mailwave.api.modules.folders.Folder;
 import jakarta.persistence.*;

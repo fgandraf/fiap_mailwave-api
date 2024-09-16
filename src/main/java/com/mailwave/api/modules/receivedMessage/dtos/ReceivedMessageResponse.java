@@ -1,7 +1,7 @@
-package com.mailwave.api.modules.received.dtos;
+package com.mailwave.api.modules.receivedMessage.dtos;
 
-import com.mailwave.api.modules.received.models.ReceivedAttachment;
-import com.mailwave.api.modules.received.models.ReceivedMessage;
+import com.mailwave.api.modules.receivedMessage.models.ReceivedAttachment;
+import com.mailwave.api.modules.receivedMessage.models.ReceivedMessage;
 
 import java.time.LocalDateTime;
 import java.util.List;

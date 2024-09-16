@@ -1,8 +1,8 @@
-package com.mailwave.api.modules.received;
+package com.mailwave.api.modules.receivedMessage;
 
-import com.mailwave.api.modules.received.dtos.ReceivedMessageCreateRequest;
-import com.mailwave.api.modules.received.dtos.ReceivedMessageIndexResponse;
-import com.mailwave.api.modules.received.dtos.ReceivedMessageResponse;
+import com.mailwave.api.modules.receivedMessage.dtos.ReceivedMessageCreateRequest;
+import com.mailwave.api.modules.receivedMessage.dtos.ReceivedMessageIndexResponse;
+import com.mailwave.api.modules.receivedMessage.dtos.ReceivedMessageResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

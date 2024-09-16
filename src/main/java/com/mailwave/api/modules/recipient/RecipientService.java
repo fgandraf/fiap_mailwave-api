@@ -6,7 +6,7 @@ import com.mailwave.api.exceptions.SentMessageNotFoundException;
 import com.mailwave.api.modules.recipient.dtos.RecipientCreateRequest;
 import com.mailwave.api.modules.recipient.dtos.RecipientResponse;
 import com.mailwave.api.modules.recipient.dtos.RecipientUpdateRequest;
-import com.mailwave.api.modules._sent.SentMessageRepository;
+import com.mailwave.api.modules.sentMessage.SentMessageRepository;
 import com.mailwave.api.exceptions.RecipientNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
