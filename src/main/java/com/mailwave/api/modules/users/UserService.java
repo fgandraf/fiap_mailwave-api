@@ -37,7 +37,7 @@ public class UserService implements UserDetailsService {
                 request.email(),
                 new BCryptPasswordEncoder().encode(request.password()),
                 false,
-                UserRole.USER,
+                UserRole.REGISTERED,
                 LocalDateTime.now(),
                 LocalDateTime.now()
         );
@@ -68,18 +68,6 @@ public class UserService implements UserDetailsService {
     public UserResponse getById(Long id) {
         var user = repository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
         return new UserResponse(user);
-    }
-
-    public UserResponse upgradePermission(Long id) {
-        var user = repository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
-        user.setRole(UserRole.ADMIN);
-        return new UserResponse(repository.save(user));
-    }
-
-    public UserResponse downgradePermission(Long id) {
-        var user = repository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
-        user.setRole(UserRole.USER);
-        return new UserResponse(repository.save(user));
     }
 
     public Page<UserResponse> getAll(Pageable page) {

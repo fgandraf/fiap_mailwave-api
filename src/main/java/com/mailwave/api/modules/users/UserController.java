@@ -82,18 +82,6 @@ public class UserController {
         return ResponseEntity.ok(service.deactivate(id));
     }
 
-    @PutMapping("/upgrade-permission/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<UserResponse> upgradePermission(@PathVariable Long id) {
-        return ResponseEntity.ok(service.upgradePermission(id));
-    }
-
-    @PutMapping("/downgrade-permission/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<UserResponse> downgradePermission(@PathVariable Long id) {
-        return ResponseEntity.ok(service.downgradePermission(id));
-    }
-
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Page<UserResponse>> getAll(Pageable page) {
