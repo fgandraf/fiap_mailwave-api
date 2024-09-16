@@ -1,7 +1,6 @@
 package com.mailwave.api.modules.folders;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.mailwave.api.modules._received.models.ReceivedMessage;
+import com.mailwave.api.modules.received.models.ReceivedMessage;
 import com.mailwave.api.modules.accounts.Account;
 import jakarta.persistence.*;
 import lombok.Getter;

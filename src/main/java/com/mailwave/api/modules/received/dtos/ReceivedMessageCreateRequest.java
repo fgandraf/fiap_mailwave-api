@@ -1,6 +1,6 @@
-package com.mailwave.api.modules._received.dtos.message;
+package com.mailwave.api.modules.received.dtos;
 
-import com.mailwave.api.modules._sent.models.SentAttachment;
+import com.mailwave.api.modules.received.models.ReceivedAttachment;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.util.List;
@@ -21,6 +21,6 @@ public record ReceivedMessageCreateRequest(
         @NotNull(message = "Account Id is required.")
         Long accountId,
 
-        List<SentAttachment> attachments
+        List<ReceivedAttachment> attachments
 ) {
 }

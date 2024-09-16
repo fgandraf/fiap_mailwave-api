@@ -1,4 +1,4 @@
-package com.mailwave.api.modules._received.models;
+package com.mailwave.api.modules.received.models;
 
 import jakarta.persistence.*;
 import lombok.Getter;

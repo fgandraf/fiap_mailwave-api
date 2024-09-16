@@ -30,8 +30,7 @@ public class TagService {
                     null,
                     request.tagName(),
                     LocalDateTime.now(),
-                    account,
-                    null
+                    account
             );
 
             var savedTag = tagRepository.save(tag);

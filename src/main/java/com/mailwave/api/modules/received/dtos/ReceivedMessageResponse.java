@@ -1,22 +1,24 @@
-package com.mailwave.api.modules._received.dtos.message;
+package com.mailwave.api.modules.received.dtos;
 
-import com.mailwave.api.modules._received.models.ReceivedMessage;
-import com.mailwave.api.modules._sent.models.SentAttachment;
+import com.mailwave.api.modules.received.models.ReceivedAttachment;
+import com.mailwave.api.modules.received.models.ReceivedMessage;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 public record ReceivedMessageResponse(
+        Long id,
         String sender,
         String subject,
         String body,
         LocalDateTime receivedAt,
         Long accountId,
-        List<SentAttachment> attachments
+        List<ReceivedAttachment> attachments
 ) {
 
     public ReceivedMessageResponse(ReceivedMessage receivedMessage){
         this(
+                receivedMessage.getId(),
                 receivedMessage.getSender(),
                 receivedMessage.getSubject(),
                 receivedMessage.getBody(),

@@ -4,6 +4,7 @@ import com.mailwave.api.modules.tags.dtos.TagCreateRequest;
 import com.mailwave.api.modules.tags.dtos.TagResponse;
 import com.mailwave.api.modules.tags.dtos.TagUpdateRequest;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -22,6 +23,7 @@ public class TagController {
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<TagResponse> createTag(@Valid @RequestBody TagCreateRequest tag) {
         var createdTag = tagService.createTag(tag);
         var location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(createdTag.id()).toUri();
@@ -29,24 +31,28 @@ public class TagController {
     }
 
     @GetMapping
+    @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<TagResponse>> getAllTags(){
         var tags = tagService.getAllTags();
         return ResponseEntity.ok(tags);
     }
 
     @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<TagResponse> getTagById(@PathVariable("id") Long id){
         var tag = tagService.getTagById(id);
         return ResponseEntity.ok(tag);
     }
 
     @PutMapping
+    @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<TagResponse> updateTag(@Valid @RequestBody TagUpdateRequest tag){
         var updatedTag = tagService.updateTag(tag);
         return ResponseEntity.ok(updatedTag);
     }
 
     @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> deleteTag(@PathVariable("id") Long id){
         tagService.deleteTag(id);
         return ResponseEntity.noContent().build();
