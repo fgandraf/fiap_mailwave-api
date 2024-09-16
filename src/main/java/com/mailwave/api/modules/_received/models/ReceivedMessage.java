@@ -1,5 +1,6 @@
 package com.mailwave.api.modules._received.models;
 
+import com.mailwave.api.modules._sent.models.SentAttachment;
 import com.mailwave.api.modules.accounts.Account;
 import com.mailwave.api.modules.folders.Folder;
 import jakarta.persistence.*;
@@ -7,6 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.EqualsAndHashCode;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -44,6 +46,25 @@ public class ReceivedMessage {
     private Account account;
 
     @ManyToOne
-    @JoinColumn(name = "FOLDER_ID")
+    @JoinColumn(name = "FOLDER_ID", nullable = false)
     private Folder folder;
+
+
+    @OneToMany(mappedBy = "MESSAGE_ID")
+    private List<SentAttachment> attachments;
+
+
+    public ReceivedMessage(Long id, String sender, String subject, String body, LocalDateTime receivedAt, Boolean isRead, Account account, Folder folder, List<SentAttachment> attachments) {
+        this.id = id;
+        this.sender = sender;
+        this.subject = subject;
+        this.body = body;
+        this.receivedAt = receivedAt;
+        this.isRead = isRead;
+        this.account = account;
+        this.folder = folder;
+        this.attachments = attachments;
+    }
+
+    public ReceivedMessage() {}
 }

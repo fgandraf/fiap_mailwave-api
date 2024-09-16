@@ -1,11 +1,13 @@
 package com.mailwave.api.modules.tags;
 
+import com.mailwave.api.modules._received.models.ReceivedMessage;
 import com.mailwave.api.modules.accounts.Account;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.EqualsAndHashCode;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -30,11 +32,15 @@ public class Tag {
     @JoinColumn(name = "ACCOUNT_ID", nullable = false)
     private Account account;
 
-    public Tag(Long id, String tagName, LocalDateTime createdAt, Account account) {
+    @OneToMany(mappedBy = "tag", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ReceivedMessage> receivedMessages;
+
+    public Tag(Long id, String tagName, LocalDateTime createdAt, Account account, List<ReceivedMessage> receivedMessages) {
         this.id = id;
         this.tagName = tagName;
         this.createdAt = createdAt;
         this.account = account;
+        this.receivedMessages = receivedMessages;
     }
 
     public Tag() {}

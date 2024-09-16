@@ -1,11 +1,13 @@
 package com.mailwave.api.modules.accounts;
 
+import com.mailwave.api.modules._received.models.ReceivedMessage;
 import com.mailwave.api.modules.users.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.EqualsAndHashCode;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -56,6 +58,8 @@ public class Account {
     @Column(name = "UPDATED_AT")
     private LocalDateTime updatedAt;
 
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ReceivedMessage> receivedMessages;
 
     @ManyToOne
     @JoinColumn(name = "USER_ID", nullable = false)

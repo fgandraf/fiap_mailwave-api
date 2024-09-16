@@ -30,7 +30,8 @@ public class FolderService {
                     null,
                     request.folderName(),
                     LocalDateTime.now(),
-                    account
+                    account,
+                    null
             );
 
             var savedFolder = folderRepository.save(folder);

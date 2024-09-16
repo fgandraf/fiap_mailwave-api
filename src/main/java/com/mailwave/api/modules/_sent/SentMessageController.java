@@ -1,8 +1,7 @@
-package com.mailwave.api.modules._sent.controllers;
+package com.mailwave.api.modules._sent;
 
 import com.mailwave.api.modules._sent.dtos.message.SentMessageRequest;
 import com.mailwave.api.modules._sent.dtos.message.SentMessageResponse;
-import com.mailwave.api.modules._sent.services.SentMessageService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

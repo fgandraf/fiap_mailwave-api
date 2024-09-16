@@ -1,4 +1,4 @@
-package com.mailwave.api.modules._sent.repositories;
+package com.mailwave.api.modules._sent;
 
 import com.mailwave.api.modules._sent.models.SentMessage;
 import org.springframework.data.jpa.repository.JpaRepository;

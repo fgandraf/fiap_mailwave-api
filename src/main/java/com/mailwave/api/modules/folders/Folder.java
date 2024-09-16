@@ -1,11 +1,14 @@
 package com.mailwave.api.modules.folders;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.mailwave.api.modules._received.models.ReceivedMessage;
 import com.mailwave.api.modules.accounts.Account;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.EqualsAndHashCode;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -30,11 +33,16 @@ public class Folder {
     @JoinColumn(name = "ACCOUNT_ID", nullable = false)
     private Account account;
 
-    public Folder(Long id, String folderName, LocalDateTime createdAt, Account account) {
+    @OneToMany(mappedBy = "folder", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ReceivedMessage> receivedMessages;
+
+
+    public Folder(Long id, String folderName, LocalDateTime createdAt, Account account, List<ReceivedMessage> receivedMessages) {
         this.id = id;
         this.folderName = folderName;
         this.createdAt = createdAt;
         this.account = account;
+        this.receivedMessages = receivedMessages;
     }
 
     public Folder() {}

@@ -1,4 +1,4 @@
-package com.mailwave.api.modules._sent.services;
+package com.mailwave.api.modules._sent;
 
 import com.mailwave.api.exceptions.AccountNotFoundException;
 import com.mailwave.api.exceptions.DatabaseOperationException;
@@ -7,7 +7,6 @@ import com.mailwave.api.modules.folders.FolderRepository;
 import com.mailwave.api.modules._sent.dtos.message.SentMessageRequest;
 import com.mailwave.api.modules._sent.dtos.message.SentMessageResponse;
 import com.mailwave.api.modules._sent.models.SentMessage;
-import com.mailwave.api.modules._sent.repositories.SentMessageRepository;
 import com.mailwave.api.exceptions.SentMessageNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
