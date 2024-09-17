@@ -15,8 +15,7 @@ import lombok.EqualsAndHashCode;
 public class SentMessageTag {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_SENT_MESSAGE_TAGS")
-    @SequenceGenerator(name = "SEQ_SENT_MESSAGE_TAGS", sequenceName = "SEQ_SENT_MESSAGE_TAGS", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "MESSAGE_TAG_ID")
     private Long id;
 

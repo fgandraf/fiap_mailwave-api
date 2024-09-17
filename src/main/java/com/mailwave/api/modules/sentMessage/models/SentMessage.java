@@ -18,8 +18,7 @@ import java.util.List;
 public class SentMessage {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_SENT_MESSAGES")
-    @SequenceGenerator(name = "SEQ_SENT_MESSAGES", sequenceName = "SEQ_SENT_MESSAGES", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "MESSAGE_ID")
     private Long id;
 
@@ -30,7 +29,7 @@ public class SentMessage {
     @Column(name = "BODY")
     private String body;
 
-    @Column(name = "SENT_AT")
+    @Column(name = "SENT_AT", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime sentAt;
 
     @ManyToOne

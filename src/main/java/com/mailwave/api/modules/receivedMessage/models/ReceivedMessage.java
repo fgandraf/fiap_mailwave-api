@@ -18,8 +18,7 @@ import java.util.List;
 public class ReceivedMessage {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_RECEIVED_MESSAGES")
-    @SequenceGenerator(name = "SEQ_RECEIVED_MESSAGES", sequenceName = "SEQ_RECEIVED_MESSAGES", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "MESSAGE_ID")
     private Long id;
 
@@ -33,7 +32,7 @@ public class ReceivedMessage {
     @Column(name = "BODY")
     private String body;
 
-    @Column(name = "RECEIVED_AT")
+    @Column(name = "RECEIVED_AT", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime receivedAt;
 
     @Column(name = "IS_READ")

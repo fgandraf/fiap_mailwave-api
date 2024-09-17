@@ -27,8 +27,9 @@
         <url/>
     </scm>
     <properties>
-        <java.version>22</java.version>
+        <java.version>21</java.version>
     </properties>
+
     <dependencies>
         <!-- SpringBoot -->
         <dependency>
@@ -86,19 +87,29 @@
             <artifactId>flyway-core</artifactId>
         </dependency>
 
-        <!-- Oracle Database -->
+        <!-- SQLite Database -->
         <dependency>
-            <groupId>com.oracle.database.jdbc</groupId>
-            <artifactId>ojdbc11</artifactId>
-            <scope>runtime</scope>
+            <groupId>org.xerial</groupId>
+            <artifactId>sqlite-jdbc</artifactId>
+            <version>3.41.2.2</version>
         </dependency>
 
-        <!-- Flyway for Oracle Database -->
+        <!-- Hibernate Core -->
         <dependency>
-            <groupId>org.flywaydb</groupId>
-            <artifactId>flyway-database-oracle</artifactId>
+            <groupId>org.hibernate.orm</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>6.5.2.Final</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.hibernate.orm</groupId>
+            <artifactId>hibernate-community-dialects</artifactId>
+            <version>6.2.7.Final</version>
+        </dependency>
+
+
     </dependencies>
+
 
     <build>
         <plugins>

@@ -17,15 +17,14 @@ import java.util.List;
 public class Folder {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_FOLDERS")
-    @SequenceGenerator(name = "SEQ_FOLDERS", sequenceName = "SEQ_FOLDERS", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "FOLDER_ID")
     private Long id;
 
     @Column(name = "FOLDER_NAME")
     private String folderName;
 
-    @Column(name = "CREATED_AT")
+    @Column(name = "CREATED_AT", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime createdAt;
 
     @ManyToOne

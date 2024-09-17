@@ -14,8 +14,7 @@ import lombok.EqualsAndHashCode;
 public class Recipient {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_RECIPIENTS")
-    @SequenceGenerator(name = "SEQ_RECIPIENTS", sequenceName = "SEQ_RECIPIENTS", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "RECIPIENT_ID")
     private Long id;
 

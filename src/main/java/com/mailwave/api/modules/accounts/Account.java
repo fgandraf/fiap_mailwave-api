@@ -17,8 +17,7 @@ import java.util.List;
 public class Account {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_ACCOUNTS")
-    @SequenceGenerator(name = "SEQ_ACCOUNTS", sequenceName = "SEQ_ACCOUNTS", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ACCOUNT_ID")
     private Long id;
 
@@ -52,10 +51,10 @@ public class Account {
     @Column(name = "USE_TLS")
     private Boolean useTls;
 
-    @Column(name = "CREATED_AT")
+    @Column(name = "CREATED_AT", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime createdAt;
 
-    @Column(name = "UPDATED_AT")
+    @Column(name = "UPDATED_AT", columnDefinition = "DATETIME")
     private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)

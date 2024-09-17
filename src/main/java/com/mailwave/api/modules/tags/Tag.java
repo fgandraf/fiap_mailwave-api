@@ -15,15 +15,14 @@ import java.time.LocalDateTime;
 public class Tag {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_TAGS")
-    @SequenceGenerator(name = "SEQ_TAGS", sequenceName = "SEQ_TAGS", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "TAG_ID")
     private Long id;
 
     @Column(name = "TAG_NAME")
     private String tagName;
 
-    @Column(name = "CREATED_AT")
+    @Column(name = "CREATED_AT", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime createdAt;
 
     @ManyToOne

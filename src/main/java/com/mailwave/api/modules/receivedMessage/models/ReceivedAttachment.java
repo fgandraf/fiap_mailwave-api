@@ -13,8 +13,7 @@ import lombok.EqualsAndHashCode;
 public class ReceivedAttachment {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_RECEIVED_ATTACHMENTS")
-    @SequenceGenerator(name = "SEQ_RECEIVED_ATTACHMENTS", sequenceName = "SEQ_RECEIVED_ATTACHMENTS", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ATTACHMENT_ID")
     private Long id;
 
