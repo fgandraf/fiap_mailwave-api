@@ -33,6 +33,7 @@ public class SecurityConfig {
 
                         .requestMatchers(HttpMethod.POST, "/api/users/login").anonymous()
                         .requestMatchers(HttpMethod.POST, "/api/users/register").anonymous()
+                        .requestMatchers(HttpMethod.GET, "/api").anonymous()
 
                         .anyRequest().hasAnyRole("ADMIN", "REGISTERED")
                 )
